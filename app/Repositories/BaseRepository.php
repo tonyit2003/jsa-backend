@@ -25,7 +25,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator - Đối tượng phân trang chứa dữ liệu và thông tin phân trang.
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException - Nếu mô hình không tìm thấy trong cơ sở dữ liệu.
      */
-    public function pagination($page = 1, $perPage = 15)
+    public function pagination($page = 1, $perPage = 10)
     {
         return $this->model->paginate($perPage, ['*'], 'page', $page);
     }

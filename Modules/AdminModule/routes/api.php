@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\AdminModule\Http\Controllers\AdminModuleController;
+use Modules\AdminModule\Http\Controllers\UserCandidateController;
 
 /*
  *--------------------------------------------------------------------------
@@ -14,6 +14,8 @@ use Modules\AdminModule\Http\Controllers\AdminModuleController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('adminmodule', AdminModuleController::class)->names('adminmodule');
-});
+// Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+//     Route::apiResource('adminmodule', AdminModuleController::class)->names('adminmodule');
+// });
+
+Route::get('/userCandidate', [UserCandidateController::class, 'index']);
