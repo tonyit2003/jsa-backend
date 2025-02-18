@@ -3,8 +3,11 @@
 namespace Modules\UserModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
+use Request;
 
 class AuthController extends Controller
 {
@@ -28,5 +31,26 @@ class AuthController extends Controller
                 'message' => 'Đăng ký tài khoản không thành công. Hãy thử lại.',
             ], 400);
         }
+    }
+
+
+    public function login(AuthLoginRequest $authLoginRequest)
+    {
+        $email = $authLoginRequest->input('email');
+        $password = $authLoginRequest->input('password');
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đăng nhập thành công',
+                'user' => $user,
+                'token' => $token,
+            ], 200);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Tài khoản hoặc mật khấu không đúng',
+        ], 401);
     }
 }
