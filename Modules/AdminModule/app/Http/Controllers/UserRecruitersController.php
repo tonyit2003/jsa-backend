@@ -6,19 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserRecruiterRepository;
 use Modules\AdminModule\Http\Res;
 use App\Repositories\UserRepository;
-use App\Services\UserCandidateService;
+use App\Services\UserRecruiterService;
 use Illuminate\Http\Request;
 use Modules\AdminModule\Http\Resources\UserRecruiterResource;
 
 class UserRecruitersController extends Controller
 {
     protected $userRecruiterRepository;
-    protected $userCandidateService;
+    protected $userRecruiterService;
 
-    public function __construct(UserRecruiterRepository $userRecruiterRepository, UserCandidateService $userCandidateService)
+    public function __construct(UserRecruiterRepository $userRecruiterRepository, UserRecruiterService $userRecruiterService)
     {
         $this->userRecruiterRepository = $userRecruiterRepository;
-        $this->userCandidateService = $userCandidateService;
+        $this->userRecruiterService = $userRecruiterService;
     }
 
     public function index(Request $request)
@@ -30,7 +30,7 @@ class UserRecruitersController extends Controller
 
     public function delete($id)
     {
-        $user = $this->userCandidateService->delete($id);
+        $user = $this->userRecruiterService->delete($id);
         if ($user !== null) {
             return response()->json([
                 'message' => 'User deleted successfully',

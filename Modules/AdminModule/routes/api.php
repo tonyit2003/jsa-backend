@@ -25,3 +25,4 @@ Route::delete('/delete-user-candidate/{id}', [UserCandidateController::class, 'd
 
 // Recruiter routes
 Route::get('/userRecruiter', [UserRecruitersController::class, 'index']);
+Route::delete('/delete-user-recruiter/{id}', [UserRecruitersController::class, 'delete']);
