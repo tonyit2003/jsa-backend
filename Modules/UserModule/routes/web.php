@@ -14,6 +14,6 @@ use Modules\UserModule\Http\Controllers\UserModuleController;
 |
 */
 
-Route::group([], function () {
-    Route::resource('usermodule', UserModuleController::class)->names('usermodule');
-});
+// Route::group([], function () {
+//     Route::resource('usermodule', UserModuleController::class)->names('usermodule');
+// });

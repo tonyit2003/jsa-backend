@@ -45,6 +45,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng nhập thành công',
+                'user' => new UserResource($user),
                 'token' => $token,
             ], 200);
         }
@@ -56,12 +57,33 @@ class AuthController extends Controller
 
     public function getUser(Request $request)
     {
+        // Lấy thông tin người dùng thông qua token được gửi trong header khi gọi API
         $user = Auth::guard('sanctum')->user();
 
         if ($user) {
             return response()->json([
                 'status' => 'success',
                 'user' => new UserResource($user)
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized'
+        ], 401);
+    }
+
+    public function logout(Request $request)
+    {
+        // Lấy thông tin người dùng thông qua token được gửi trong header khi gọi API
+        $user = Auth::guard('sanctum')->user();
+
+        if ($user) {
+            // Xóa token của người dùng khỏi database
+            $user->currentAccessToken()->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đăng xuất thành công'
             ], 200);
         }
 
