@@ -67,9 +67,19 @@ class User extends Authenticatable
         ];
     }
 
-    // Định nghĩa quan hệ với CandidateProfiles
+    /** 
+     *Định nghĩa quan hệ với CandidateProfiles
+     */
     public function candidateProfile()
     {
         return $this->hasOne(CandidateProfiles::class, 'user_id');
+    }
+
+    /**
+     * Mối quan hệ 1-1: Một user có thể là một recruiter
+     */
+    public function recruiter()
+    {
+        return $this->hasOne(Recruiters::class, 'user_id');
     }
 }
