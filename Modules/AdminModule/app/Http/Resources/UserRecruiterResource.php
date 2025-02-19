@@ -4,7 +4,7 @@ namespace Modules\AdminModule\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserCandidateResource extends JsonResource
+class UserRecruiterResource extends JsonResource
 {
     public function toArray($request)
     {
@@ -13,10 +13,9 @@ class UserCandidateResource extends JsonResource
             'email' => $this->email,
             'full_name' => $this->full_name ?? null,
             'phone_number' => $this->phone_number,
-            'resume' => $this->candidateProfile->resume ?? null, // Lấy từ quan hệ
-            'skills' => $this->candidateProfile->skills ?? null,
-            'experience' => $this->candidateProfile->experience ?? null,
-            'education' => $this->candidateProfile->education ?? null,
+            'company_name' => $this->recruiter->company_name ?? null, // Lấy từ quan hệ
+            'company_description' => $this->recruiter->company_description ?? null,
+            'company_website' => $this->recruiter->company_website ?? null,
         ];
     }
 }
