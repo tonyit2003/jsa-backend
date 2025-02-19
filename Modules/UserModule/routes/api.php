@@ -15,10 +15,10 @@ use Modules\UserModule\Http\Controllers\UserModuleController;
  *
 */
 
-// Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-//     Route::apiResource('/register', UserModuleController::class)->names('usermodule');
-// });
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/getUser', [AuthController::class, 'getUser']);
+});
