@@ -66,4 +66,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Định nghĩa quan hệ với CandidateProfiles
+    public function candidateProfile()
+    {
+        return $this->hasOne(CandidateProfiles::class, 'user_id');
+    }
 }

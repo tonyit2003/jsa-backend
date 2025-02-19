@@ -19,3 +19,4 @@ use Modules\AdminModule\Http\Controllers\UserCandidateController;
 // });
 
 Route::get('/userCandidate', [UserCandidateController::class, 'index']);
+Route::delete('/delete-user-candidate/{id}', [UserCandidateController::class, 'delete']);
