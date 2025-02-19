@@ -3,10 +3,11 @@
 namespace Modules\UserModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\AuthLoginRequest;
-use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Modules\UserModule\Http\Requests\Auth\AuthLoginRequest;
+use Modules\UserModule\Http\Requests\Auth\AuthRegisterRequest;
+use Modules\UserModule\Transformers\UserResource;
 use Request;
 
 class AuthController extends Controller
@@ -44,13 +45,29 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Đăng nhập thành công',
-                'user' => $user,
                 'token' => $token,
             ], 200);
         }
         return response()->json([
             'status' => 'error',
             'message' => 'Tài khoản hoặc mật khấu không đúng',
+        ], 401);
+    }
+
+    public function getUser(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+
+        if ($user) {
+            return response()->json([
+                'status' => 'success',
+                'user' => new UserResource($user)
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized'
         ], 401);
     }
 }
