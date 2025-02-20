@@ -29,4 +29,17 @@ class UserService extends BaseService implements UserServiceInterface
             return null;
         }
     }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->userRepository->delete($id);
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return null;
+        }
+    }
 }

@@ -3,34 +3,32 @@
 namespace Modules\AdminModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserCandidateRepository;
-use Modules\AdminModule\Http\Res;
 use App\Repositories\UserRepository;
-use App\Services\UserCandidateService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Modules\AdminModule\Http\Resources\UserCandidateResource;
 
 class UserCandidateController extends Controller
 {
-    protected $userCandidateRepository;
-    protected $userCandidateService;
+    protected $userRepository;
+    protected $userService;
 
-    public function __construct(UserCandidateRepository $userCandidateRepository, UserCandidateService $userCandidateService)
+    public function __construct(UserRepository $userRepository, UserService $userService)
     {
-        $this->userCandidateRepository = $userCandidateRepository;
-        $this->userCandidateService = $userCandidateService;
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     public function index(Request $request)
     {
         $page = $request->get('page', 1);
-        $users = $this->userCandidateRepository->pagination($page);
+        $users = $this->userRepository->paginationCandidate($page);
         return UserCandidateResource::collection($users);
     }
 
     public function delete($id)
     {
-        $user = $this->userCandidateService->delete($id);
+        $user = $this->userService->delete($id);
         if ($user !== null) {
             return response()->json([
                 'message' => 'User deleted successfully',

@@ -3,34 +3,33 @@
 namespace Modules\AdminModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRecruiterRepository;
 use Modules\AdminModule\Http\Res;
 use App\Repositories\UserRepository;
-use App\Services\UserRecruiterService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Modules\AdminModule\Http\Resources\UserRecruiterResource;
 
 class UserRecruitersController extends Controller
 {
-    protected $userRecruiterRepository;
-    protected $userRecruiterService;
+    protected $userRepository;
+    protected $userService;
 
-    public function __construct(UserRecruiterRepository $userRecruiterRepository, UserRecruiterService $userRecruiterService)
+    public function __construct(UserRepository $userRepository, UserService $userService)
     {
-        $this->userRecruiterRepository = $userRecruiterRepository;
-        $this->userRecruiterService = $userRecruiterService;
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     public function index(Request $request)
     {
         $page = $request->get('page', 1);
-        $users = $this->userRecruiterRepository->pagination($page);
+        $users = $this->userRepository->paginationRecruiter($page);
         return UserRecruiterResource::collection($users);
     }
 
     public function delete($id)
     {
-        $user = $this->userRecruiterService->delete($id);
+        $user = $this->userService->delete($id);
         if ($user !== null) {
             return response()->json([
                 'message' => 'User deleted successfully',

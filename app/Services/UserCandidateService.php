@@ -15,17 +15,4 @@ class UserCandidateService extends BaseService implements UserCandidateServiceIn
     {
         $this->userCandidateRepository = $userCandidateRepository;
     }
-
-    public function delete($id)
-    {
-        DB::beginTransaction();
-        try {
-            $user = $this->userCandidateRepository->delete($id);
-            DB::commit();
-            return $user;
-        } catch (Exception $e) {
-            DB::rollBack();
-            return null;
-        }
-    }
 }

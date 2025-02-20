@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\Repositories\Interfaces\UserRecruiterRepositoryInterface;
 use App\Repositories\UserCandidateRepository;
 use App\Repositories\UserRecruiterRepository;
 use App\Services\Interfaces\UserCandidateServiceInterface;
+use App\Services\Interfaces\UserRecruiterServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class UserRecruiterService extends BaseService implements UserCandidateServiceInterface
+class UserRecruiterService extends BaseService implements UserRecruiterServiceInterface
 {
     protected $userCandidateRepository;
     protected $userRecruiterRepository;
@@ -17,19 +19,6 @@ class UserRecruiterService extends BaseService implements UserCandidateServiceIn
     {
         $this->userCandidateRepository = $userCandidateRepository;
         $this->userRecruiterRepository = $userRecruiterRepository;
-    }
-
-    public function delete($id)
-    {
-        DB::beginTransaction();
-        try {
-            $user = $this->userCandidateRepository->delete($id);
-            DB::commit();
-            return $user;
-        } catch (Exception $e) {
-            DB::rollBack();
-            return null;
-        }
     }
 
     public function getInformation($userId)
