@@ -27,7 +27,7 @@ class UserRecruiterService extends BaseService implements UserRecruiterServiceIn
         try {
             $res = $this->userRecruiterRepository->searchByConditions(['user_id' => $userId]);
             DB::commit();
-            return $res;
+            return $res->first() ?? null;
         } catch (Exception $e) {
             DB::rollBack();
             return null;
@@ -39,13 +39,13 @@ class UserRecruiterService extends BaseService implements UserRecruiterServiceIn
         DB::beginTransaction();
         try {
             $conditions = ['user_id' => $userId];
-            $data = array_filter([
+            $data = [
                 'company_name' => $request->input('company_name') ?? '',
                 'company_description' => $request->input('company_description') ?? '',
                 'company_website' => $request->input('company_website') ?? '',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ], fn($value) => $value !== '');
+            ];
             $this->userRecruiterRepository->updateOrInsert($conditions, $data);
             DB::commit();
             return true;

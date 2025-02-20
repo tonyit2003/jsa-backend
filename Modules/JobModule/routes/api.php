@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\JobModule\Http\Controllers\JobModuleController;
+use Modules\JobModule\Http\Controllers\JobPostController;
 
 /*
  *--------------------------------------------------------------------------
@@ -14,6 +14,6 @@ use Modules\JobModule\Http\Controllers\JobModuleController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('jobmodule', JobModuleController::class)->names('jobmodule');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/insert-job-post', [JobPostController::class, 'insert']);
 });
