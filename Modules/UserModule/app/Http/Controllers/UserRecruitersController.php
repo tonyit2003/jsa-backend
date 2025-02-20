@@ -23,7 +23,7 @@ class UserRecruitersController extends Controller
             $companyInformation = $this->userRecruiterService->getInformation($user->id);
             return response()->json([
                 'status' => 'success',
-                'data' => $companyInformation,
+                'data' => $companyInformation
             ], 200);
         }
 
