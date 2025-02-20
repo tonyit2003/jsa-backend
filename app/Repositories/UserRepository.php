@@ -15,6 +15,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         parent::__construct($this->model);
     }
 
+    public function paginationAdmin($page = 1, $perPage = 10)
+    {
+        return $this->model
+            ->where('user_type', 'admin') // Lọc user_type là admin
+            ->whereNull('deleted_at') //Lấy user chưa bị khóa deleted_at != null
+            ->paginate($perPage, ['*'], 'page', $page);
+    }
+
     public function paginationCandidate($page = 1, $perPage = 10)
     {
         return $this->model

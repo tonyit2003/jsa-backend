@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\AdminModule\Http\Controllers\UserAdminController;
 use Modules\AdminModule\Http\Controllers\UserCandidateController;
 use Modules\AdminModule\Http\Controllers\UserRecruitersController;
 
@@ -26,3 +27,10 @@ Route::delete('/delete-user-candidate/{id}', [UserCandidateController::class, 'd
 // Recruiter routes
 Route::get('/userRecruiter', [UserRecruitersController::class, 'index']);
 Route::delete('/delete-user-recruiter/{id}', [UserRecruitersController::class, 'delete']);
+
+// Recruiter routes
+Route::get('/userAdmin', [UserAdminController::class, 'index']);
+Route::post('/create-user-admin', action: [UserAdminController::class, 'store']);
+Route::get('/get-information-user', [UserAdminController::class, 'getInformation']);
+Route::put('/edit-user/{id}', [UserAdminController::class, 'update']);
+Route::delete('/delete-user-admin/{id}', [UserAdminController::class, 'delete']);
