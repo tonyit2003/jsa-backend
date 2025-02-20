@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\UserModule\Http\Controllers\AuthController;
-use Modules\UserModule\Http\Controllers\UserModuleController;
+use Modules\UserModule\Http\Controllers\UserRecruitersController;
 
 /*
  *--------------------------------------------------------------------------
@@ -22,4 +22,6 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getUser', [AuthController::class, 'getUser']);
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/get-company-information', [UserRecruitersController::class, 'getInformation']);
+    Route::post('/update-company-information', [UserRecruitersController::class, 'updateInformation']);
 });

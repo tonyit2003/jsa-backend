@@ -14,17 +14,6 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    /**
-     * @todo: Hàm dùng để phân trang cho các mô hình dữ liệu.
-     * @purpose:
-     *  - Trả về kết quả phân trang của một mô hình Eloquenttrang.
-     * @author: Tony
-     * @since: 15-01-2025
-     * @param int $page (mặc định là 1) - Số trang hiện tại.
-     * @param int $perPage (mặc định là 10) - Số lượng kết quả trên mỗi trang.
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator - Đối tượng phân trang chứa dữ liệu và thông tin phân trang.
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException - Nếu mô hình không tìm thấy trong cơ sở dữ liệu.
-     */
     public function pagination($page = 1, $perPage = 10)
     {
         return $this->model->paginate($perPage, ['*'], 'page', $page);
@@ -43,23 +32,45 @@ class BaseRepository implements BaseRepositoryInterface
         return $query->get();
     }
 
+    /**
+     * Tìm kiếm theo điều kiện.
+     *
+     * @param array $conditions Danh sách điều kiện tìm kiếm.
+     *        Mỗi phần tử của mảng có thể là dạng:
+     *         - 'field' => 'value' (so sánh bằng)
+     *         - 'field' => [operator, value] (ví dụ: ['like', '%keyword%'])
+     * @param array $with Danh sách quan hệ cần eager load (mặc định rỗng)
+     * @param array $select Các cột cần lấy (mặc định lấy tất cả)
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function searchByConditions(array $conditions = [], array $with = [], array $select = ['*'])
+    {
+        $query = $this->model->select($select);
+
+        if (!empty($with)) {
+            $query->with($with);
+        }
+
+        foreach ($conditions as $field => $value) {
+            if (is_array($value)) {
+                if (count($value) === 2) {
+                    [$operator, $val] = $value;
+                    $query->where($field, $operator, $val);
+                }
+            } else {
+                $query->where($field, $value);
+            }
+        }
+
+        return $query->get();
+    }
+
 
     public function findById($modelId)
     {
         return $this->model->findOrFail($modelId);
     }
 
-    /**
-     * @todo: Thêm một bản ghi mới vào cơ sở dữ liệu và trả về đối tượng đầy đủ dữ liệu vừa được lưu.
-     * @purpose:
-     *  - Hàm này thực hiện việc thêm một bản ghi mới vào cơ sở dữ liệu dựa trên dữ liệu được cung cấp thông qua `$payload`.
-     *  - Sau khi thêm mới, bản ghi sẽ được tải lại từ cơ sở dữ liệu để đảm bảo nhận được các giá trị tự động sinh (nếu có).
-     * @author: Tony
-     * @since: 17-01-2025
-     * @param array $payload - Mảng dữ liệu cần thêm mới, bao gồm các key tương ứng với các cột trong bảng.
-     * @return \Illuminate\Database\Eloquent\Model|null - Đối tượng model đầy đủ dữ liệu vừa được lưu hoặc `null` nếu không thành công.
-     * @throws \Exception - Nếu quá trình thêm bản ghi gặp lỗi.
-     */
     public function insert($payload = [])
     {
         return $this->model->create($payload)->fresh();
@@ -71,6 +82,11 @@ class BaseRepository implements BaseRepositoryInterface
         $model->fill($payload);
         $model->save();
         return $model;
+    }
+
+    public function updateOrInsert($conditions, $data)
+    {
+        return $this->model->updateOrInsert($conditions, $data);
     }
 
     public function delete($id = 0)

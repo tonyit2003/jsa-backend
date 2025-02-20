@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Recruiters;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRecruiterRepositoryInterface;
 
@@ -9,7 +10,7 @@ class UserRecruiterRepository extends BaseRepository implements UserRecruiterRep
 {
     protected $model;
 
-    public function __construct(User $model)
+    public function __construct(Recruiters $model)
     {
         $this->model = $model;
         parent::__construct($this->model);

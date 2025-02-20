@@ -17,6 +17,9 @@ class Recruiters extends Model
         'company_name',
         'company_description',
         'company_website',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     /**

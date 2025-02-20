@@ -25,7 +25,6 @@ class UserCandidateService extends BaseService implements UserCandidateServiceIn
             return $user;
         } catch (Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
             return null;
         }
     }
