@@ -42,8 +42,32 @@ class JobPostService extends BaseService implements JobPostServiceInterface
             return true;
         } catch (Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
             return false;
+        }
+    }
+
+    public function getPagination($request)
+    {
+        try {
+            $page = $request->input('page', 1);
+            $res = $this->jobPostRepository->pagination($page, 9, ['recruiters'], ['status' => 'approved']);
+            if ($res->isEmpty()) {
+                throw new Exception('Job posts not found');
+            }
+            return $res;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getDetail($request)
+    {
+        try {
+            $jobPostId = $request->input('jobPostId');
+            $res = $this->jobPostRepository->searchByConditions(['id' => $jobPostId, 'status' => 'approved'], ['recruiters']);
+            return $res->isEmpty() ? null : $res->first();
+        } catch (Exception $e) {
+            return null;
         }
     }
 }

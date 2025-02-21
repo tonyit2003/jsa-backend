@@ -20,11 +20,18 @@ class UserRecruitersController extends Controller
     {
         $user = Auth::guard('sanctum')->user();
         if ($user) {
-            $companyInformation = $this->userRecruiterService->getInformation($user->id);
-            return response()->json([
-                'status' => 'success',
-                'data' => $companyInformation
-            ], 200);
+            $res = $companyInformation = $this->userRecruiterService->getInformation($user->id);
+            if ($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $companyInformation
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Lấy thông tin công ty không thành công'
+                ], 500);
+            }
         }
 
         return response()->json([
@@ -37,11 +44,18 @@ class UserRecruitersController extends Controller
     {
         $user = Auth::guard('sanctum')->user();
         if ($user) {
-            $this->userRecruiterService->updateInformation($user->id, $request);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật thông tin công ty thành công',
-            ], 200);
+            $res = $this->userRecruiterService->updateInformation($user->id, $request);
+            if ($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Cập nhật thông tin công ty thành công',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Cập nhật thông tin công ty không thành công'
+                ], 500);
+            }
         }
 
         return response()->json([

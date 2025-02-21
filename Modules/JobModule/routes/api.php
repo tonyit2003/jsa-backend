@@ -17,3 +17,6 @@ use Modules\JobModule\Http\Controllers\JobPostController;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/insert-job-post', [JobPostController::class, 'insert']);
 });
+
+Route::get('/get-job-post', [JobPostController::class, 'getPagination']);
+Route::get('/get-job-post-detail', [JobPostController::class, 'getDetail']);

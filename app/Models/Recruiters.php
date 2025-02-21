@@ -29,4 +29,12 @@ class Recruiters extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Định nghĩa mối quan hệ với model JobPost
+     */
+    public function jobPosts()
+    {
+        return $this->hasMany(JobPost::class, 'recruiter_id');
+    }
 }

@@ -25,4 +25,12 @@ class JobPost extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * Định nghĩa mối quan hệ với model Recruiters
+     */
+    public function recruiters()
+    {
+        return $this->belongsTo(Recruiters::class, 'recruiter_id');
+    }
 }

@@ -19,7 +19,7 @@ class InsertJobPostRequest extends FormRequest
             'job_requirements' => 'required',
             'job_location'     => 'required',
             'job_type'         => 'required|in:full-time,part-time,contract,internship',
-            'salary_range'     => 'required|numeric|min:0',
+            'salary_range'     => 'required',
         ];
     }
 
@@ -33,8 +33,6 @@ class InsertJobPostRequest extends FormRequest
             'job_type.required'         => 'Vui lòng chọn loại công việc.',
             'job_type.in'             => 'Loại công việc không hợp lệ.',
             'salary_range.required'     => 'Vui lòng nhập mức lương.',
-            'salary_range.numeric'      => 'Dữ liệu của lương phải là số.',
-            'salary_range.min'          => 'Giá trị của lương phải không nhỏ hơn 0.',
         ];
     }
 }
