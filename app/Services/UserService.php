@@ -58,6 +58,21 @@ class UserService extends BaseService implements UserServiceInterface
         }
     }
 
+    public function updateInformation($id, $request)
+    {
+        DB::beginTransaction();
+        try {
+            $payload = $request->all();
+            $user = $this->userRepository->update($id, $payload);
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return null;
+        }
+    }
+
     public function delete($id)
     {
         DB::beginTransaction();
