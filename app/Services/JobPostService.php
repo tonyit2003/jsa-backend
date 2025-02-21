@@ -19,6 +19,19 @@ class JobPostService extends BaseService implements JobPostServiceInterface
         $this->jobPostRepository = $jobPostRepository;
     }
 
+    public function getInformation($id)
+    {
+        DB::beginTransaction();
+        try {
+            $res = $this->jobPostRepository->findById($id);
+            DB::commit();
+            return $res;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return null;
+        }
+    }
+
     public function insert($userId, $request)
     {
         DB::beginTransaction();
@@ -44,6 +57,21 @@ class JobPostService extends BaseService implements JobPostServiceInterface
             DB::rollBack();
             dd($e->getMessage());
             return false;
+        }
+    }
+
+    public function update($id, $request)
+    {
+        DB::beginTransaction();
+        try {
+            $payload = $request->all();
+            $user = $this->jobPostRepository->update($id, $payload);
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return null;
         }
     }
 }

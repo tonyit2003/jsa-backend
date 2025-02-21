@@ -25,4 +25,9 @@ class JobPost extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function recruiters()
+    {
+        return $this->belongsTo(Recruiters::class, 'recruiter_id');
+    }
 }

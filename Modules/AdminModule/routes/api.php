@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\AdminModule\Http\Controllers\JobPostController;
 use Modules\AdminModule\Http\Controllers\UserAdminController;
 use Modules\AdminModule\Http\Controllers\UserCandidateController;
 use Modules\AdminModule\Http\Controllers\UserRecruitersController;
@@ -34,3 +35,9 @@ Route::post('/create-user-admin', action: [UserAdminController::class, 'store'])
 Route::get('/get-information-user', [UserAdminController::class, 'getInformation']);
 Route::put('/edit-user/{id}', [UserAdminController::class, 'update']);
 Route::delete('/delete-user-admin/{id}', [UserAdminController::class, 'delete']);
+
+// JobPost routes
+Route::get('/jobPost', [JobPostController::class, 'index']);
+Route::get('/get-information-job-post', [JobPostController::class, 'getInformation']);
+Route::put('/browser-job-post/{id}', [JobPostController::class, 'update']);
+

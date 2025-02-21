@@ -14,4 +14,14 @@ class JobPostRepository extends BaseRepository implements JobPostRepositoryInter
         $this->model = $model;
         parent::__construct($this->model);
     }
+
+    public function paginationJobPost($page = 1, $perPage = 10)
+    {
+        return $this->model->paginate($perPage, ['*'], 'page', $page);
+    }
+
+    public function findById($modelId)
+    {
+        return $this->model->with('recruiters')->findOrFail($modelId);
+    }
 }
