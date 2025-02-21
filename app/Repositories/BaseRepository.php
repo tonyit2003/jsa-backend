@@ -14,10 +14,29 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    public function pagination($page = 1, $perPage = 10)
+    /**
+     * Phân trang dữ liệu kèm theo eager load các relationship và áp dụng điều kiện.
+     *
+     * @param int   $page       Số trang cần lấy, mặc định là trang 1.
+     * @param int   $perPage    Số bản ghi trên mỗi trang, mặc định là 10.
+     * @param array $relations  Mảng chứa tên các relationship muốn eager load.
+     * @param array $conditions Mảng chứa các điều kiện dạng key-value để áp dụng where.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator Trả về đối tượng phân trang.
+     */
+    public function pagination($page = 1, $perPage = 10, $relations = [], $conditions = [])
     {
-        return $this->model->paginate($perPage, ['*'], 'page', $page);
+        $query = $this->model->with($relations);
+
+        if (!empty($conditions)) {
+            foreach ($conditions as $column => $value) {
+                $query->where($column, $value);
+            }
+        }
+
+        return $query->paginate($perPage, ['*'], 'page', $page);
     }
+
 
     public function search($filters = [])
     {
