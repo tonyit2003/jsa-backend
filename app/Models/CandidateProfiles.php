@@ -18,6 +18,9 @@ class CandidateProfiles extends Model
         'skills',
         'experience',
         'education',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -26,5 +29,10 @@ class CandidateProfiles extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function job_posts()
+    {
+        return $this->belongsToMany(JobPost::class, 'job_applications', 'candidate_id', 'job_id')->withPivot('application_status', 'applied_at', 'deleted_at');
     }
 }

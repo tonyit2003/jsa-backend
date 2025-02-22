@@ -33,4 +33,9 @@ class JobPost extends Model
     {
         return $this->belongsTo(Recruiters::class, 'recruiter_id');
     }
+
+    public function candidate_profiles()
+    {
+        return $this->belongsToMany(CandidateProfiles::class, 'job_applications', 'job_id', 'candidate_id')->withPivot('application_status', 'applied_at', 'deleted_at');
+    }
 }
