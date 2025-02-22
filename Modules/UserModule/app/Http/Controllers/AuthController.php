@@ -3,6 +3,8 @@
 namespace Modules\UserModule\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\UserCandidateService;
+use App\Services\UserRecruiterService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 use Modules\UserModule\Http\Requests\Auth\AuthLoginRequest;
@@ -13,16 +15,31 @@ use Request;
 class AuthController extends Controller
 {
     protected $userService;
+    protected $userRecruiterService;
+    protected $userCandidateService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, UserRecruiterService $userRecruiterService, UserCandidateService $userCandidateService)
     {
         $this->userService = $userService;
+        $this->userRecruiterService = $userRecruiterService;
+        $this->userCandidateService = $userCandidateService;
     }
 
     public function register(AuthRegisterRequest $authRegisterRequest)
     {
         $user = $this->userService->create($authRegisterRequest);
         if ($user !== null) {
+            $type = $authRegisterRequest->input('user_type');
+            switch ($type) {
+                case 'candidate': {
+                        $this->userCandidateService->createEmpty($user->id);
+                        break;
+                    }
+                case 'recruiter': {
+                        $this->userRecruiterService->createEmpty($user->id);
+                        break;
+                    }
+            }
             return response()->json([
                 'message' => 'Đăng ký tài khoản thành công',
                 'user' => $user

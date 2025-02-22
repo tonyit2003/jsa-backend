@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\JobModule\Http\Controllers\CandidateProfileController;
 use Modules\JobModule\Http\Controllers\JobPostController;
 
 /*
@@ -16,6 +17,8 @@ use Modules\JobModule\Http\Controllers\JobPostController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/insert-job-post', [JobPostController::class, 'insert']);
+    Route::post('/apply', [CandidateProfileController::class, 'apply']);
+    Route::get('/check-apply', [CandidateProfileController::class, 'checkApply']);
 });
 
 Route::get('/get-job-post', [JobPostController::class, 'getPagination']);

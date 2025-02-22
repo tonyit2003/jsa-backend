@@ -21,6 +21,25 @@ class UserRecruiterService extends BaseService implements UserRecruiterServiceIn
         $this->userRecruiterRepository = $userRecruiterRepository;
     }
 
+    public function createEmpty($userId)
+    {
+        DB::beginTransaction();
+        try {
+            $payload = [
+                'user_id' => $userId,
+                'company_name' => '',
+                'company_description' => '',
+                'company_website' => '',
+            ];
+            $this->userRecruiterRepository->insert($payload);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
     public function getInformation($userId)
     {
         DB::beginTransaction();
